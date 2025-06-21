@@ -1,111 +1,94 @@
 <?php
 
-use StartMVC\Router;
+use StartMVC\Route;
 
-/**
- * API路由配置
- */
+// 认证相关路由
+Route::post('/auth/login', 'AuthController@login');
+Route::post('/auth/logout', 'AuthController@logout')->middleware('auth');
+Route::get('/auth/user', 'AuthController@user')->middleware('auth');
+Route::post('/auth/refresh', 'AuthController@refresh')->middleware('auth');
+Route::post('/auth/change-password', 'AuthController@changePassword')->middleware('auth');
 
-// 仪表盘
-Router::get('/api/dashboard/statistics', 'DashboardController@statistics');
+// 仪表盘相关路由
+Route::get('/dashboard/stats', 'DashboardController@stats')->middleware('auth');
+Route::get('/dashboard/recent-accounts', 'DashboardController@recentAccounts')->middleware('auth');
+Route::get('/dashboard/expiring-accounts', 'DashboardController@expiringAccounts')->middleware('auth');
+Route::get('/dashboard/login-statistics', 'DashboardController@loginStatistics')->middleware('auth');
 
-// 用户管理
-Router::get('/api/users', 'UserController@index');
-Router::get('/api/users/{id}', 'UserController@show');
-Router::post('/api/users', 'UserController@store');
-Router::put('/api/users/{id}', 'UserController@update');
-Router::delete('/api/users/{id}', 'UserController@destroy');
-Router::post('/api/users/import', 'UserController@import');
-Router::get('/api/users/export', 'UserController@export');
-Router::get('/api/users/statistics', 'UserController@statistics');
+// 用户相关路由
+Route::get('/users', 'UserController@index')->middleware('auth');
+Route::get('/users/{id}', 'UserController@show')->middleware('auth');
+Route::post('/users', 'UserController@store')->middleware('auth');
+Route::put('/users/{id}', 'UserController@update')->middleware('auth');
+Route::delete('/users/{id}', 'UserController@destroy')->middleware('auth');
+Route::get('/users/export', 'UserController@export')->middleware('auth');
+Route::post('/users/import', 'UserController@import')->middleware('auth');
+Route::get('/users/import-template', 'UserController@importTemplate')->middleware('auth');
 
-// 套餐管理
-Router::get('/api/packages', 'PackageController@index');
-Router::get('/api/packages/{id}', 'PackageController@show');
-Router::post('/api/packages', 'PackageController@store');
-Router::put('/api/packages/{id}', 'PackageController@update');
-Router::delete('/api/packages/{id}', 'PackageController@destroy');
-Router::get('/api/packages/distribution', 'PackageController@distribution');
+// 套餐相关路由
+Route::get('/packages', 'PackageController@index')->middleware('auth');
+Route::get('/packages/{id}', 'PackageController@show')->middleware('auth');
+Route::post('/packages', 'PackageController@store')->middleware('auth');
+Route::put('/packages/{id}', 'PackageController@update')->middleware('auth');
+Route::delete('/packages/{id}', 'PackageController@destroy')->middleware('auth');
+Route::get('/packages/distribution', 'PackageController@distribution')->middleware('auth');
 
-// 宽带账号管理
-Router::get('/api/broadband-accounts', 'BroadbandAccountController@index');
-Router::get('/api/broadband-accounts/{id}', 'BroadbandAccountController@show');
-Router::post('/api/broadband-accounts', 'BroadbandAccountController@store');
-Router::put('/api/broadband-accounts/{id}', 'BroadbandAccountController@update');
-Router::delete('/api/broadband-accounts/{id}', 'BroadbandAccountController@destroy');
-Router::put('/api/broadband-accounts/{id}/status', 'BroadbandAccountController@updateStatus');
-Router::get('/api/broadband-accounts/expiring', 'BroadbandAccountController@expiring');
+// 宽带账号相关路由
+Route::get('/accounts', 'AccountController@index')->middleware('auth');
+Route::get('/accounts/{id}', 'AccountController@show')->middleware('auth');
+Route::post('/accounts', 'AccountController@store')->middleware('auth');
+Route::put('/accounts/{id}', 'AccountController@update')->middleware('auth');
+Route::delete('/accounts/{id}', 'AccountController@destroy')->middleware('auth');
+Route::post('/accounts/{id}/reset-password', 'AccountController@resetPassword')->middleware('auth');
+Route::get('/accounts/statistics', 'AccountController@statistics')->middleware('auth');
 
-// 设备管理
-Router::get('/api/devices', 'DeviceController@index');
-Router::get('/api/devices/{id}', 'DeviceController@show');
-Router::post('/api/devices', 'DeviceController@store');
-Router::put('/api/devices/{id}', 'DeviceController@update');
-Router::delete('/api/devices/{id}', 'DeviceController@destroy');
-Router::post('/api/devices/import', 'DeviceController@import');
-Router::get('/api/devices/export', 'DeviceController@export');
-Router::get('/api/devices/{id}/qrcode', 'DeviceController@generateQrCode');
-Router::get('/api/devices/warnings', 'DeviceController@warnings');
-Router::post('/api/devices/batch', 'DeviceController@batchOperation');
-Router::get('/api/devices/inventory', 'DeviceController@inventory');
+// 设备相关路由
+Route::get('/devices', 'DeviceController@index')->middleware('auth');
+Route::get('/devices/{id}', 'DeviceController@show')->middleware('auth');
+Route::post('/devices', 'DeviceController@store')->middleware('auth');
+Route::put('/devices/{id}', 'DeviceController@update')->middleware('auth');
+Route::delete('/devices/{id}', 'DeviceController@destroy')->middleware('auth');
+Route::post('/devices/{id}/generate-qrcode', 'DeviceController@generateQrcode')->middleware('auth');
+Route::get('/devices/export', 'DeviceController@export')->middleware('auth');
+Route::post('/devices/import', 'DeviceController@import')->middleware('auth');
+Route::get('/devices/import-template', 'DeviceController@importTemplate')->middleware('auth');
 
-// 设备借用管理
-Router::get('/api/device-loans', 'DeviceLoanController@index');
-Router::get('/api/device-loans/{id}', 'DeviceLoanController@show');
-Router::post('/api/device-loans', 'DeviceLoanController@store');
-Router::put('/api/device-loans/{id}/return', 'DeviceLoanController@returnDevice');
+// 业务员相关路由
+Route::get('/agents', 'AgentController@index')->middleware('auth');
+Route::get('/agents/{id}', 'AgentController@show')->middleware('auth');
+Route::post('/agents', 'AgentController@store')->middleware('auth');
+Route::put('/agents/{id}', 'AgentController@update')->middleware('auth');
+Route::delete('/agents/{id}', 'AgentController@destroy')->middleware('auth');
+Route::get('/agents/{id}/performance', 'AgentController@performance')->middleware('auth');
 
-// 设备维修管理
-Router::get('/api/device-repairs', 'DeviceRepairController@index');
-Router::get('/api/device-repairs/{id}', 'DeviceRepairController@show');
-Router::post('/api/device-repairs', 'DeviceRepairController@store');
-Router::put('/api/device-repairs/{id}/complete', 'DeviceRepairController@complete');
+// 报表相关路由
+Route::get('/reports/revenue', 'ReportController@revenue')->middleware('auth');
+Route::get('/reports/user-growth', 'ReportController@userGrowth')->middleware('auth');
+Route::get('/reports/package-distribution', 'ReportController@packageDistribution')->middleware('auth');
+Route::get('/reports/agent-performance', 'ReportController@agentPerformance')->middleware('auth');
+Route::get('/reports/export', 'ReportController@export')->middleware('auth');
 
-// 供应商管理
-Router::get('/api/suppliers', 'SupplierController@index');
-Router::get('/api/suppliers/{id}', 'SupplierController@show');
-Router::post('/api/suppliers', 'SupplierController@store');
-Router::put('/api/suppliers/{id}', 'SupplierController@update');
-Router::delete('/api/suppliers/{id}', 'SupplierController@destroy');
+// 系统设置相关路由
+Route::get('/settings', 'SettingController@index')->middleware('auth');
+Route::put('/settings', 'SettingController@update')->middleware('auth');
+Route::post('/settings/backup', 'SettingController@backup')->middleware('auth');
+Route::get('/settings/backup-list', 'SettingController@backupList')->middleware('auth');
+Route::post('/settings/restore', 'SettingController@restore')->middleware('auth');
 
-// 采购订单管理
-Router::get('/api/purchase-orders', 'PurchaseOrderController@index');
-Router::get('/api/purchase-orders/{id}', 'PurchaseOrderController@show');
-Router::post('/api/purchase-orders', 'PurchaseOrderController@store');
-Router::put('/api/purchase-orders/{id}', 'PurchaseOrderController@update');
-Router::delete('/api/purchase-orders/{id}', 'PurchaseOrderController@destroy');
-Router::put('/api/purchase-orders/{id}/status', 'PurchaseOrderController@updateStatus');
+// 管理员相关路由
+Route::get('/admins', 'AdminController@index')->middleware('auth');
+Route::get('/admins/{id}', 'AdminController@show')->middleware('auth');
+Route::post('/admins', 'AdminController@store')->middleware('auth');
+Route::put('/admins/{id}', 'AdminController@update')->middleware('auth');
+Route::delete('/admins/{id}', 'AdminController@destroy')->middleware('auth');
+Route::post('/admins/{id}/reset-password', 'AdminController@resetPassword')->middleware('auth');
 
-// 业务员管理
-Router::get('/api/salespeople', 'SalespersonController@index');
-Router::get('/api/salespeople/{id}', 'SalespersonController@show');
-Router::post('/api/salespeople', 'SalespersonController@store');
-Router::put('/api/salespeople/{id}', 'SalespersonController@update');
-Router::delete('/api/salespeople/{id}', 'SalespersonController@destroy');
-Router::get('/api/salespeople/{id}/statistics', 'SalespersonController@statistics');
+// 日志相关路由
+Route::get('/logs/operation', 'LogController@operation')->middleware('auth');
+Route::get('/logs/login', 'LogController@login')->middleware('auth');
+Route::get('/logs/system', 'LogController@system')->middleware('auth');
 
-// 业务记录管理
-Router::get('/api/sales-records', 'SalesRecordController@index');
-Router::get('/api/sales-records/{id}', 'SalesRecordController@show');
-Router::post('/api/sales-records', 'SalesRecordController@store');
-Router::put('/api/sales-records/{id}', 'SalesRecordController@update');
-Router::delete('/api/sales-records/{id}', 'SalesRecordController@destroy');
-
-// 报表分析
-Router::get('/api/reports/user-growth', 'ReportController@userGrowth');
-Router::get('/api/reports/package-distribution', 'ReportController@packageDistribution');
-Router::get('/api/reports/device-statistics', 'ReportController@deviceStatistics');
-Router::get('/api/reports/device', 'ReportController@deviceReport');
-
-// API密钥管理
-Router::get('/api/api-keys', 'ApiKeyController@index');
-Router::get('/api/api-keys/{id}', 'ApiKeyController@show');
-Router::post('/api/api-keys', 'ApiKeyController@store');
-Router::put('/api/api-keys/{id}', 'ApiKeyController@update');
-Router::delete('/api/api-keys/{id}', 'ApiKeyController@destroy');
-
-// 系统设置
-Router::get('/api/settings', 'SettingController@index');
-Router::put('/api/settings', 'SettingController@update');
-Router::get('/api/settings/email', 'SettingController@getEmailSettings');
-Router::put('/api/settings/email', 'SettingController@updateEmailSettings');
+// 宽带认证API（供外部系统调用）
+Route::post('/auth/broadband', 'BroadbandAuthController@authenticate');
+Route::post('/auth/broadband/logout', 'BroadbandAuthController@logout');
+Route::get('/auth/broadband/check', 'BroadbandAuthController@check');
