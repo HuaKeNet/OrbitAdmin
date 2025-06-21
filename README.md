@@ -1,50 +1,81 @@
-# React + TypeScript + Vite
+# 宽带用户计时管理系统
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+基于OrbitAdmin模板和PHP StartMVC框架开发的宽带用户计时管理系统，用于管理宽带用户的宽带账号计时、设备资产和相关业务流程。
 
-Currently, two official plugins are available:
+## 技术栈
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 前端：React + TypeScript + Vite + TailwindCSS
+- 后端：PHP 7.4+ (StartMVC框架)
+- 数据库：MySQL 5.6+
 
-## Expanding the ESLint configuration
+## 主要功能
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+1. **首页**
+   - 系统概览
+   - 数据统计
 
-- Configure the top-level `parserOptions` property like this:
+2. **用户管理**
+   - 用户列表
+   - 添加用户
+   - 导入导出
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+3. **套餐管理**
+   - 套餐列表
+   - 套餐分布
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+4. **设备仓库**
+   - 设备列表
+   - 添加设备
+   - 批量操作
+   - 设备借用管理
+   - 维修管理
+   - 报废管理
+   - 设备盘点
+   - 导入导出
+   - 设备预警系统
+   - 设备二维码管理
+   - 供应商列表
+   - 添加供应商
+   - 采购订单列表
+   - 创建采购订单
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+5. **业务员管理**
+   - 业务员列表
+   - 业务统计
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+6. **报表分析**
+   - 用户增长报表
+   - 套餐分布报表
+   - 设备统计
+   - 设备报表
+
+7. **API管理**
+   - API设置
+   - API密钥管理
+   - API文档
+
+8. **邮件系统**
+   - 邮件系统设置
+
+9. **系统设置**
+   - 系统设置
+
+## 安装要求
+
+- PHP 7.4+
+- MySQL 5.6+
+- Node.js 16+
+- Composer
+
+## 安装步骤
+
+1. 克隆仓库
+2. 安装前端依赖：`npm install`
+3. 安装后端依赖：`composer install`
+4. 配置数据库
+5. 运行数据库迁移：`php artisan migrate`
+6. 启动开发服务器：`npm run dev`
+
+## 许可证
+
+MIT License
