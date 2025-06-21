@@ -1,190 +1,4 @@
-// 用户类型定义
-export interface User {
-  id: number;
-  username: string;
-  real_name: string;
-  phone: string;
-  address: string;
-  id_card: string;
-  status: number;
-  created_at: string;
-  updated_at: string;
-}
-
-// 宽带账号类型定义
-export interface BroadbandAccount {
-  id: number;
-  user_id: number;
-  account: string;
-  password: string;
-  ip_address: string | null;
-  mac_address: string | null;
-  package_id: number;
-  start_time: string;
-  end_time: string;
-  status: number;
-  created_at: string;
-  updated_at: string;
-  user?: User;
-  package?: Package;
-}
-
-// 套餐类型定义
-export interface Package {
-  id: number;
-  name: string;
-  price: number;
-  duration: number;
-  bandwidth: number;
-  description: string | null;
-  status: number;
-  created_at: string;
-  updated_at: string;
-}
-
-// 设备类型定义
-export interface Device {
-  id: number;
-  name: string;
-  type: string;
-  model: string;
-  serial_number: string;
-  purchase_date: string;
-  warranty_period: number;
-  supplier_id: number;
-  status: number;
-  location: string;
-  price: number;
-  qr_code: string | null;
-  created_at: string;
-  updated_at: string;
-  supplier?: Supplier;
-}
-
-// 设备借用记录类型定义
-export interface DeviceLoan {
-  id: number;
-  device_id: number;
-  user_id: number;
-  loan_date: string;
-  expected_return_date: string;
-  actual_return_date: string | null;
-  status: number;
-  notes: string | null;
-  created_at: string;
-  updated_at: string;
-  device?: Device;
-  user?: User;
-}
-
-// 设备维修记录类型定义
-export interface DeviceRepair {
-  id: number;
-  device_id: number;
-  problem: string;
-  repair_date: string;
-  completion_date: string | null;
-  cost: number;
-  status: number;
-  notes: string | null;
-  created_at: string;
-  updated_at: string;
-  device?: Device;
-}
-
-// 供应商类型定义
-export interface Supplier {
-  id: number;
-  name: string;
-  contact_person: string;
-  phone: string;
-  email: string;
-  address: string;
-  status: number;
-  created_at: string;
-  updated_at: string;
-}
-
-// 采购订单类型定义
-export interface PurchaseOrder {
-  id: number;
-  order_number: string;
-  supplier_id: number;
-  total_amount: number;
-  order_date: string;
-  delivery_date: string | null;
-  status: number;
-  notes: string | null;
-  created_at: string;
-  updated_at: string;
-  supplier?: Supplier;
-  items?: PurchaseOrderItem[];
-}
-
-// 采购订单明细类型定义
-export interface PurchaseOrderItem {
-  id: number;
-  order_id: number;
-  device_name: string;
-  device_type: string;
-  device_model: string;
-  quantity: number;
-  unit_price: number;
-  created_at: string;
-  updated_at: string;
-}
-
-// 业务员类型定义
-export interface Salesperson {
-  id: number;
-  name: string;
-  phone: string;
-  email: string;
-  commission_rate: number;
-  status: number;
-  created_at: string;
-  updated_at: string;
-}
-
-// 业务记录类型定义
-export interface SalesRecord {
-  id: number;
-  salesperson_id: number;
-  user_id: number;
-  package_id: number;
-  amount: number;
-  commission: number;
-  sale_date: string;
-  created_at: string;
-  updated_at: string;
-  salesperson?: Salesperson;
-  user?: User;
-  package?: Package;
-}
-
-// API密钥类型定义
-export interface ApiKey {
-  id: number;
-  name: string;
-  api_key: string;
-  permissions: string;
-  status: number;
-  created_at: string;
-  updated_at: string;
-  parsedPermissions?: Record<string, boolean>;
-}
-
-// 系统设置类型定义
-export interface Setting {
-  id: number;
-  key: string;
-  value: string;
-  description: string | null;
-  created_at: string;
-  updated_at: string;
-}
-
-// 分页响应类型定义
+// 通用分页响应类型
 export interface PaginatedResponse<T> {
   data: T[];
   total: number;
@@ -193,136 +7,226 @@ export interface PaginatedResponse<T> {
   totalPages: number;
 }
 
-// 通用响应类型定义
-export interface ApiResponse<T> {
-  success: boolean;
-  message: string;
-  data?: T;
+// 用户类型
+export interface User {
+  id: number;
+  username: string;
+  real_name: string;
+  phone: string;
+  id_card: string;
+  address: string;
+  status: number;
+  created_at: string;
+  updated_at: string;
+  accounts?: BroadbandAccount[];
 }
 
-// 用户统计类型定义
-export interface UserStatistics {
-  total: number;
-  active: number;
-  inactive: number;
-  newThisMonth: number;
-  newThisWeek: number;
-}
-
-// 套餐统计类型定义
-export interface PackageStatistics {
-  total: number;
-  active: number;
-  inactive: number;
-  distribution: Array<{
-    name: string;
-    count: number;
-    percentage: number;
-  }>;
-}
-
-// 设备统计类型定义
-export interface DeviceStatistics {
-  total: number;
-  normal: number;
-  loaned: number;
-  repairing: number;
-  scrapped: number;
-  warningCount: number;
-}
-
-// 业务统计类型定义
-export interface SalesStatistics {
-  totalSales: number;
-  totalCommission: number;
-  monthlySales: Array<{
-    month: string;
-    amount: number;
-    commission: number;
-  }>;
-}
-
-// 设备预警类型定义
-export interface DeviceWarning {
-  device: Device;
-  warningType: 'warranty' | 'maintenance';
-  daysRemaining: number;
-}
-
-// 仪表盘统计类型定义
-export interface DashboardStatistics {
-  users: UserStatistics;
-  devices: DeviceStatistics;
-  sales: {
-    totalAmount: number;
-    totalCommission: number;
-    monthlyGrowth: number;
-  };
-  activeAccounts: number;
-  expiringSoon: number;
-  deviceWarnings: number;
-}
-
-// 菜单项类型定义
-export interface MenuItem {
-  key: string;
-  label: string;
-  icon?: React.ReactNode;
-  children?: MenuItem[];
-  path?: string;
-}
-
-// 表格列配置类型定义
-export interface TableColumn {
-  title: string;
-  dataIndex: string;
-  key: string;
-  render?: (text: any, record: any) => React.ReactNode;
-  sorter?: boolean | ((a: any, b: any) => number);
-  filters?: Array<{ text: string; value: any }>;
-  onFilter?: (value: any, record: any) => boolean;
-  width?: number | string;
-}
-
-// 表单字段类型定义
-export interface FormField {
+// 套餐类型
+export interface Package {
+  id: number;
   name: string;
-  label: string;
-  type: 'input' | 'textarea' | 'select' | 'number' | 'date' | 'radio' | 'checkbox';
-  placeholder?: string;
-  rules?: any[];
-  options?: Array<{ label: string; value: any }>;
-  disabled?: boolean;
-  span?: number;
+  price: number;
+  duration: number;
+  bandwidth: number;
+  description: string;
+  status: number;
+  created_at: string;
+  updated_at: string;
 }
 
-// 图表数据类型定义
-export interface ChartData {
-  labels: string[];
-  datasets: Array<{
-    label: string;
-    data: number[];
-    backgroundColor?: string | string[];
-    borderColor?: string | string[];
-    borderWidth?: number;
-  }>;
+// 宽带账号类型
+export interface BroadbandAccount {
+  id: number;
+  user_id: number;
+  package_id: number;
+  account: string;
+  start_time: string;
+  end_time: string;
+  status: number;
+  last_login_time: string | null;
+  last_login_ip: string | null;
+  remark: string | null;
+  created_at: string;
+  updated_at: string;
+  user?: User;
+  package?: Package;
+  login_logs?: LoginLog[];
 }
 
-// 文件上传响应类型定义
-export interface FileUploadResponse {
-  url: string;
-  filename: string;
-  size: number;
-  type: string;
+// 登录日志类型
+export interface LoginLog {
+  id: number;
+  account_id: number;
+  ip_address: string;
+  device: string;
+  location: string;
+  status: number;
+  remark: string | null;
+  created_at: string;
 }
 
-// 导入导出结果类型定义
+// 设备类型
+export interface Device {
+  id: number;
+  name: string;
+  model: string;
+  serial_number: string;
+  mac_address: string;
+  status: number;
+  location: string;
+  remark: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+// 业务员类型
+export interface Agent {
+  id: number;
+  name: string;
+  phone: string;
+  id_card: string;
+  address: string;
+  status: number;
+  commission_rate: number;
+  remark: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+// 业务员业绩类型
+export interface AgentPerformance {
+  agent_id: number;
+  agent_name: string;
+  total_users: number;
+  total_accounts: number;
+  total_revenue: number;
+  commission: number;
+  period: string;
+}
+
+// 收入报表类型
+export interface RevenueReport {
+  date: string;
+  total: number;
+  new_users: number;
+  renewals: number;
+}
+
+// 用户增长报表类型
+export interface UserGrowthReport {
+  date: string;
+  new_users: number;
+  total_users: number;
+}
+
+// 套餐分布报表类型
+export interface PackageDistribution {
+  name: string;
+  count: number;
+  percentage: number;
+}
+
+// 导入结果类型
 export interface ImportResult {
   total: number;
   success: number;
   failed: number;
-  errors: Array<{
+  errors?: Array<{
     row: number;
     message: string;
   }>;
+}
+
+// 系统设置类型
+export interface SystemSettings {
+  site_name: string;
+  site_logo: string;
+  admin_email: string;
+  smtp_host: string;
+  smtp_port: number;
+  smtp_username: string;
+  smtp_password: string;
+  smtp_encryption: string;
+  backup_enabled: boolean;
+  backup_frequency: string;
+  backup_retention: number;
+}
+
+// 管理员类型
+export interface Admin {
+  id: number;
+  username: string;
+  name: string;
+  email: string;
+  role: string;
+  status: number;
+  last_login_time: string | null;
+  last_login_ip: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+// 操作日志类型
+export interface OperationLog {
+  id: number;
+  admin_id: number;
+  admin_name: string;
+  action: string;
+  ip_address: string;
+  user_agent: string;
+  details: string;
+  created_at: string;
+}
+
+// 系统日志类型
+export interface SystemLog {
+  id: number;
+  level: string;
+  message: string;
+  context: string;
+  created_at: string;
+}
+
+// 仪表盘统计类型
+export interface DashboardStats {
+  total_users: number;
+  active_users: number;
+  total_accounts: number;
+  active_accounts: number;
+  expiring_accounts: number;
+  expired_accounts: number;
+  total_revenue: number;
+  monthly_revenue: number;
+}
+
+// 备份记录类型
+export interface BackupRecord {
+  id: number;
+  filename: string;
+  size: number;
+  created_at: string;
+  created_by: string;
+  status: string;
+}
+
+// 认证响应类型
+export interface AuthResponse {
+  token: string;
+  token_type: string;
+  expires_in: number;
+  user: Admin;
+}
+
+// 宽带认证响应类型
+export interface BroadbandAuthResponse {
+  success: boolean;
+  message: string;
+  data?: {
+    account: string;
+    user_name: string;
+    package_name: string;
+    start_time: string;
+    end_time: string;
+    session_id?: string;
+  };
 }
