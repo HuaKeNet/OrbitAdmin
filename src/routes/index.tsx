@@ -1,9 +1,12 @@
 import React, { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import Layout from '../components/Layout';
-import Loading from '../components/Loading';
+import { Spin } from 'antd';
+import AuthLayout from '../layouts/AuthLayout';
+import MainLayout from '../layouts/MainLayout';
+import PrivateRoute from '../components/PrivateRoute';
 
 // 懒加载页面组件
+const Login = lazy(() => import('../pages/auth/Login'));
 const Dashboard = lazy(() => import('../pages/dashboard/Dashboard'));
 
 // 用户管理
@@ -16,115 +19,134 @@ const UserImportExport = lazy(() => import('../pages/users/UserImportExport'));
 const PackageList = lazy(() => import('../pages/packages/PackageList'));
 const PackageDistribution = lazy(() => import('../pages/packages/PackageDistribution'));
 
-// 设备仓库
+// 宽带账号管理
+const AccountList = lazy(() => import('../pages/accounts/AccountList'));
+const AccountAdd = lazy(() => import('../pages/accounts/AccountAdd'));
+const AccountEdit = lazy(() => import('../pages/accounts/AccountEdit'));
+const AccountView = lazy(() => import('../pages/accounts/AccountView'));
+
+// 设备管理
 const DeviceList = lazy(() => import('../pages/devices/DeviceList'));
 const DeviceAdd = lazy(() => import('../pages/devices/DeviceAdd'));
-const DeviceBatch = lazy(() => import('../pages/devices/DeviceBatch'));
-const DeviceLoans = lazy(() => import('../pages/devices/DeviceLoans'));
-const DeviceRepairs = lazy(() => import('../pages/devices/DeviceRepairs'));
-const DeviceScrap = lazy(() => import('../pages/devices/DeviceScrap'));
-const DeviceInventory = lazy(() => import('../pages/devices/DeviceInventory'));
+const DeviceEdit = lazy(() => import('../pages/devices/DeviceEdit'));
 const DeviceImportExport = lazy(() => import('../pages/devices/DeviceImportExport'));
-const DeviceWarnings = lazy(() => import('../pages/devices/DeviceWarnings'));
 const DeviceQrCode = lazy(() => import('../pages/devices/DeviceQrCode'));
 
-// 供应商管理
-const SupplierList = lazy(() => import('../pages/suppliers/SupplierList'));
-const SupplierAdd = lazy(() => import('../pages/suppliers/SupplierAdd'));
-
-// 采购订单管理
-const PurchaseOrderList = lazy(() => import('../pages/purchase-orders/PurchaseOrderList'));
-const PurchaseOrderAdd = lazy(() => import('../pages/purchase-orders/PurchaseOrderAdd'));
-
 // 业务员管理
-const SalespersonList = lazy(() => import('../pages/salespeople/SalespersonList'));
-const SalesStatistics = lazy(() => import('../pages/salespeople/SalesStatistics'));
+const AgentList = lazy(() => import('../pages/agents/AgentList'));
+const AgentAdd = lazy(() => import('../pages/agents/AgentAdd'));
+const AgentEdit = lazy(() => import('../pages/agents/AgentEdit'));
+const AgentPerformance = lazy(() => import('../pages/agents/AgentPerformance'));
 
 // 报表分析
+const RevenueReport = lazy(() => import('../pages/reports/RevenueReport'));
 const UserGrowthReport = lazy(() => import('../pages/reports/UserGrowthReport'));
-const PackageDistributionReport = lazy(() => import('../pages/reports/PackageDistributionReport'));
-const DeviceStatisticsReport = lazy(() => import('../pages/reports/DeviceStatisticsReport'));
-const DeviceReport = lazy(() => import('../pages/reports/DeviceReport'));
-
-// API管理
-const ApiSettings = lazy(() => import('../pages/api/ApiSettings'));
-const ApiKeys = lazy(() => import('../pages/api/ApiKeys'));
-const ApiDocs = lazy(() => import('../pages/api/ApiDocs'));
-
-// 邮件系统
-const EmailSettings = lazy(() => import('../pages/email/EmailSettings'));
+const PackageReport = lazy(() => import('../pages/reports/PackageReport'));
+const AgentReport = lazy(() => import('../pages/reports/AgentReport'));
 
 // 系统设置
 const SystemSettings = lazy(() => import('../pages/settings/SystemSettings'));
+const BackupRestore = lazy(() => import('../pages/settings/BackupRestore'));
+const AdminList = lazy(() => import('../pages/settings/AdminList'));
+const AdminAdd = lazy(() => import('../pages/settings/AdminAdd'));
+const AdminEdit = lazy(() => import('../pages/settings/AdminEdit'));
 
-// 错误页面
-const NotFound = lazy(() => import('../pages/error/NotFound'));
+// 日志管理
+const OperationLog = lazy(() => import('../pages/logs/OperationLog'));
+const LoginLog = lazy(() => import('../pages/logs/LoginLog'));
+const SystemLog = lazy(() => import('../pages/logs/SystemLog'));
+
+// 404页面
+const NotFound = lazy(() => import('../pages/NotFound'));
+
+// 加载中组件
+const LoadingFallback = () => (
+  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+    <Spin size="large" />
+  </div>
+);
 
 const AppRoutes: React.FC = () => {
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<LoadingFallback />}>
       <Routes>
-        <Route path="/" element={<Layout />}>
-          {/* 仪表盘 */}
-          <Route index element={<Dashboard />} />
-          
-          {/* 用户管理 */}
-          <Route path="users" element={<UserList />} />
-          <Route path="users/add" element={<UserAdd />} />
-          <Route path="users/edit/:id" element={<UserEdit />} />
-          <Route path="users/import-export" element={<UserImportExport />} />
-          
-          {/* 套餐管理 */}
-          <Route path="packages" element={<PackageList />} />
-          <Route path="packages/distribution" element={<PackageDistribution />} />
-          
-          {/* 设备仓库 */}
-          <Route path="devices" element={<DeviceList />} />
-          <Route path="devices/add" element={<DeviceAdd />} />
-          <Route path="devices/batch" element={<DeviceBatch />} />
-          <Route path="devices/loans" element={<DeviceLoans />} />
-          <Route path="devices/repairs" element={<DeviceRepairs />} />
-          <Route path="devices/scrap" element={<DeviceScrap />} />
-          <Route path="devices/inventory" element={<DeviceInventory />} />
-          <Route path="devices/import-export" element={<DeviceImportExport />} />
-          <Route path="devices/warnings" element={<DeviceWarnings />} />
-          <Route path="devices/qrcode" element={<DeviceQrCode />} />
-          
-          {/* 供应商管理 */}
-          <Route path="suppliers" element={<SupplierList />} />
-          <Route path="suppliers/add" element={<SupplierAdd />} />
-          
-          {/* 采购订单管理 */}
-          <Route path="purchase-orders" element={<PurchaseOrderList />} />
-          <Route path="purchase-orders/add" element={<PurchaseOrderAdd />} />
-          
-          {/* 业务员管理 */}
-          <Route path="salespeople" element={<SalespersonList />} />
-          <Route path="salespeople/statistics" element={<SalesStatistics />} />
-          
-          {/* 报表分析 */}
-          <Route path="reports/user-growth" element={<UserGrowthReport />} />
-          <Route path="reports/package-distribution" element={<PackageDistributionReport />} />
-          <Route path="reports/device-statistics" element={<DeviceStatisticsReport />} />
-          <Route path="reports/device" element={<DeviceReport />} />
-          
-          {/* API管理 */}
-          <Route path="api/settings" element={<ApiSettings />} />
-          <Route path="api/keys" element={<ApiKeys />} />
-          <Route path="api/docs" element={<ApiDocs />} />
-          
-          {/* 邮件系统 */}
-          <Route path="email/settings" element={<EmailSettings />} />
-          
-          {/* 系统设置 */}
-          <Route path="settings" element={<SystemSettings />} />
-          
-          {/* 404页面 */}
-          <Route path="*" element={<NotFound />} />
+        {/* 认证路由 */}
+        <Route path="/auth" element={<AuthLayout />}>
+          <Route path="login" element={<Login />} />
+          <Route path="" element={<Navigate to="/auth/login" replace />} />
         </Route>
-        
-        {/* 重定向到首页 */}
-        <Route path="*" element={<Navigate to="/" replace />} />
+
+        {/* 主应用路由 */}
+        <Route path="/" element={<PrivateRoute><MainLayout /></PrivateRoute>}>
+          <Route index element={<Navigate to="/dashboard" replace />} />
+          <Route path="dashboard" element={<Dashboard />} />
+
+          {/* 用户管理 */}
+          <Route path="users">
+            <Route index element={<UserList />} />
+            <Route path="add" element={<UserAdd />} />
+            <Route path="edit/:id" element={<UserEdit />} />
+            <Route path="import-export" element={<UserImportExport />} />
+          </Route>
+
+          {/* 套餐管理 */}
+          <Route path="packages">
+            <Route index element={<PackageList />} />
+            <Route path="distribution" element={<PackageDistribution />} />
+          </Route>
+
+          {/* 宽带账号管理 */}
+          <Route path="accounts">
+            <Route index element={<AccountList />} />
+            <Route path="add" element={<AccountAdd />} />
+            <Route path="edit/:id" element={<AccountEdit />} />
+            <Route path="view/:id" element={<AccountView />} />
+          </Route>
+
+          {/* 设备管理 */}
+          <Route path="devices">
+            <Route index element={<DeviceList />} />
+            <Route path="add" element={<DeviceAdd />} />
+            <Route path="edit/:id" element={<DeviceEdit />} />
+            <Route path="import-export" element={<DeviceImportExport />} />
+            <Route path="qrcode/:id" element={<DeviceQrCode />} />
+          </Route>
+
+          {/* 业务员管理 */}
+          <Route path="agents">
+            <Route index element={<AgentList />} />
+            <Route path="add" element={<AgentAdd />} />
+            <Route path="edit/:id" element={<AgentEdit />} />
+            <Route path="performance/:id" element={<AgentPerformance />} />
+          </Route>
+
+          {/* 报表分析 */}
+          <Route path="reports">
+            <Route path="revenue" element={<RevenueReport />} />
+            <Route path="user-growth" element={<UserGrowthReport />} />
+            <Route path="package" element={<PackageReport />} />
+            <Route path="agent" element={<AgentReport />} />
+          </Route>
+
+          {/* 系统设置 */}
+          <Route path="settings">
+            <Route index element={<SystemSettings />} />
+            <Route path="backup-restore" element={<BackupRestore />} />
+            <Route path="admins" element={<AdminList />} />
+            <Route path="admins/add" element={<AdminAdd />} />
+            <Route path="admins/edit/:id" element={<AdminEdit />} />
+          </Route>
+
+          {/* 日志管理 */}
+          <Route path="logs">
+            <Route path="operation" element={<OperationLog />} />
+            <Route path="login" element={<LoginLog />} />
+            <Route path="system" element={<SystemLog />} />
+          </Route>
+        </Route>
+
+        {/* 404页面 */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>
   );
