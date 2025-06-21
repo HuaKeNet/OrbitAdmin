@@ -7,6 +7,7 @@
 - 前端：React + TypeScript + Vite + TailwindCSS
 - 后端：PHP 7.4+ (StartMVC框架)
 - 数据库：MySQL 5.6+
+- 运行环境：宝塔面板
 
 ## 主要功能
 
@@ -66,6 +67,7 @@
 - MySQL 5.6+
 - Node.js 16+
 - Composer
+- 宝塔面板
 
 ## 安装步骤
 
@@ -73,7 +75,7 @@
 2. 安装前端依赖：`npm install`
 3. 安装后端依赖：`composer install`
 4. 配置数据库
-5. 运行数据库迁移：`php artisan migrate`
+5. 运行数据库迁移
 6. 启动开发服务器：`npm run dev`
 
 ## 许可证
