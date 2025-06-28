@@ -1,0 +1,45 @@
+{
+    "name": "huakenet/broadband-management-system",
+    "description": "宽带用户计时管理系统",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": "^7.4",
+        "startmvc/framework": "^1.0",
+        "vlucas/phpdotenv": "^5.3",
+        "monolog/monolog": "^2.3",
+        "phpoffice/phpspreadsheet": "^1.18",
+        "endroid/qr-code": "^4.4",
+        "guzzlehttp/guzzle": "^7.4",
+        "phpmailer/phpmailer": "^6.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "filp/whoops": "^2.14"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ]
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
